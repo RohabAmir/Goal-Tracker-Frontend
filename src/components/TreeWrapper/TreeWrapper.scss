@@ -1,0 +1,109 @@
+@keyframes move {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.sidebar {
+    width: 350px;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+    background-color: #f7f7f7;
+    height: 100vh;
+    overflow-y: auto;
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        font-family: "Inter", sans-serif;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        font-size: 1.4rem;
+        font-weight: 500;
+    }
+
+    input {
+        height: 40px;
+        padding: 12px 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        width: 100%;
+        font-family: "Inter", sans-serif;
+        font-size: 1.4rem;
+        background-color: #ffffff30;
+    }
+
+    button {
+        padding: 16px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: "Inter", sans-serif;
+        font-size: 1.4rem;
+        font-weight: 600;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: #218838;
+        }
+
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+    }
+}
+
+.container {
+    display: flex;
+}
+
+.treeWrapper {
+    width: 80%;
+    flex-grow: 1;
+    margin: 0 auto;
+    height: 550px;
+    border: 2px solid #101010;
+    margin-top: 16px;
+    // padding: 36px;
+    margin: 24px;
+
+    &__node-root {
+        > circle {
+            fill: rgb(60, 3, 84);
+            stroke: 1px;
+        }
+    }
+    .rd3t-label__title {
+        font-size: 1.4rem;
+    }
+    &__node-branch {
+        > circle {
+            fill: #2d3748;
+        }
+    }
+    circle {
+        r: 20;
+    }
+    path {
+        stroke: #555;
+        stroke-width: 2px;
+        fill: none;
+        stroke-dasharray: 10 10; // Define the length of the visible part and the gap
+        stroke-dashoffset: 20; // Set the initial offset to the sum of the visible part and the gap
+        animation: move 1s linear infinite;
+
+        &:hover {
+            stroke: #a00;
+        }
+    }
+
+}
+.go3162094071{
+    font-size: 18px;
+}

@@ -1,0 +1,36 @@
+.goals{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    .goal-icon{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        width: 40px;
+        height: 40px;
+        padding: 9px;
+        background: rgba($color: #8f8fde, $alpha: 4.8);
+        svg{
+            fill: #12126c;
+        }
+    }
+    .name{
+        width: 40%;
+        font-size: 20px;
+        font-weight: 600;
+        color: #333951;
+       
+    }
+    .goals,.timeStamp{
+        margin-right: 20px;
+        font-size: 10px;
+        color: #333951;
+    }
+    &:hover{
+        box-shadow: 0px 20px 30px rgba( #c9c9c9, 0.50);
+    }
+}
