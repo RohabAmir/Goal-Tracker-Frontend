@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
+
 
 import { registerUser } from '../../redux/auth/authActions'
-import image  from '../../assets/images/susan-wilkinson-9IAVdOvyUMU-unsplash.jpg'
+
 import{
    PasswordHide,
    PasswordVisible
@@ -16,31 +17,43 @@ import './Registration.scss'
 
 export const RegistrationScreen = () => {
 
-    const[passwordHidden, setPasswordHidden] = useState({
-        one: true,
-        two: true
-    });
+    const[ passwordHidden, setPasswordHidden ] = useState({one: true, two: true});
+    const [ isCheckboxChecked, setIsCheckboxChecked ] = useState(false);
+    const [ showCheckboxError, setShowCheckboxError ] = useState(false);
+
+
     const { register, handleSubmit } = useForm();
     const { registerSuccess } = useSelector( (state)=> state.auth );
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const submitForm = (data) => {
-        dispatch(registerUser(data))
+        if(isCheckboxChecked){
+            setShowCheckboxError(false);// Reset the error state
+            dispatch(registerUser(data))
+        }else{
+            setShowCheckboxError(true); // Show the error message
+        }
     }
 
-    const navigate = useNavigate();
 
     useEffect(() =>{
         // redirect the user to the login page if registration was successfull
         if( registerSuccess ) navigate ( '/login' )
     },[navigate, registerSuccess])
+
+    const handleCheckboxChange = (event) =>{ //handle checkbox change
+        setIsCheckboxChecked(event.target.checked);
+        setShowCheckboxError(false); // Hide the error message when the user interacts with the checkbox
+    }
     
 
   return (
     <div className='registrationScreen'>
       <div className='registrationScreen__content'>
                 <form onSubmit={handleSubmit(submitForm)}>
-                    <h1>Get Started Now!</h1>
+                    <h1>Create an account</h1>
                     <label>
                         <span>Name</span>
                         <input 
@@ -78,16 +91,28 @@ export const RegistrationScreen = () => {
                         />
                     </label>
                     <label style={{display: 'flex', flexDirection: 'row'}}>
-                        <input type='checkbox' /> 
+                        <input 
+                            className='checkbox' 
+                            type='checkbox' 
+                            checked={isCheckboxChecked}
+                            onChange={handleCheckboxChange}/> 
                         <span>I agree to the&nbsp; 
                         <span style={{textDecoration:'underline'}}>terms & policy</span>
                         </span>
                     </label>
-                    <button type="submit">Signup</button>
+                    {showCheckboxError && (
+                        <div style={{ color: 'red', marginTop: '5px' }}>
+                            Please check the terms and conditions form
+                        </div>
+                    )}
+                    <button type="submit">Create an account</button>
+                    <div className="register">
+                        <span className="text">Already have an account?&nbsp; </span>
+                        <Link to="/login" style={{ color: "#6161fc", textDecoration: "underline", cursor: 'pointer' }}>
+                                Login
+                        </Link>
+                    </div>
                 </form>
-            </div>
-            <div className='registrationScreen__imgContainer'>
-                <img src={ image } alt='imageSide'/>
             </div>
 
     </div>

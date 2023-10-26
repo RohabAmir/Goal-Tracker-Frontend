@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
-import { Moment } from 'moment'
-import {  useNavigate } from 'react-router-dom'
+import moment from 'moment'
+import {  useNavigate, Link} from 'react-router-dom'
 import { Goals } from '../../components/Goals/Goals'
 import api from '../../utils/api'
 import { 
@@ -42,6 +42,7 @@ const [goals, setGoals] = useState([]);
     // Use moment to format the timestamp
     return moment.unix(timestamp).fromNow();
   };
+  
   const GoalsFetched = goals.map((goal) => {
     return(
       <Goals 
@@ -53,31 +54,32 @@ const [goals, setGoals] = useState([]);
 }) 
 
 const handleLogout = () =>{
-  navigate('/login'); //redirecting 
-  localStorage.clear(getidToken, getrefreshToken(),getLocalId); //clearing the tokens stored in local storage
+  localStorage.clear() //clearing the tokens stored in local storage
+  navigate("/login")
 }
   return (
     <div className='dashboard'>
         <div className='dashboard__leftNavigation'>
             <p className='dashboard__leftNavigation--logo'>N<span>odes</span></p>
             <div className='dashboard__leftNavigation--nav'>
-                <a href='#' className='link active'>
+                <Link to='#' className='link active'>
                     <Home/>
-                </a>
-                <a href='#' className='link'>
+                </Link>
+                <Link to='#' className='link'>
                     <List/>
-                </a>
-                <a href='#' className='link'>
+                </Link>
+                <Link to='#' className='link'>
                     <FolderOpen/>
-                </a>
-                <a href='#' className='link'>
+                </Link>
+                <Link to='#' className='link'>
                     <Setting/>
-                </a>
+                </Link>
             </div>
-            <div onClick={handleLogout} className='link log'>
-              <Logout/>
+            <div className='link log'>
+                <Link to='/login'>
+                    <Logout onClick={handleLogout}/>
+                </Link>
             </div>
-
         </div>
         <div className='dashboard__content'>
           <div className='row'>

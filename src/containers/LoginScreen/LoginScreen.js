@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { userLogin } from "../../redux/auth/authActions";
-import image from "../../assets/images/sidepic3.jpg";
 import{
   PasswordHide,
   PasswordVisible
@@ -22,26 +22,31 @@ export const LoginScreen = () => {
     two: true
 });
   const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
   const { loginSuccess } = useSelector((state) => state.auth)
 
   const dispatch = useDispatch();
-  const submitForm = (data) => {
-    dispatch(userLogin(data));
+  const submitForm = (data) => { 
+    dispatch(userLogin(data)).then(()=> {
+      navigate('/dashboard');
+    })
+
+
+
   }
 
-  const navigate = useNavigate();
 
-  useEffect(() =>{
-    // redirect the user to the Dashboard page if user loggedIn
-    if( loginSuccess ) navigate ( '/dashboard' )
-  },[navigate, loginSuccess])
+  // useEffect(() =>{
+  //   // redirect the user to the Dashboard page if user loggedIn
+  //   if( loginSuccess ) navigate ( '/dashboard' )
+  // },[navigate, loginSuccess])
   
   
   return (
     <div className="loginScreen">
       <div className="loginScreen__content">
         <form onSubmit={handleSubmit(submitForm)}>
-          <h1>Welcome to Nodes</h1>
+          <h1>Login</h1>
           <label>
             <span>Email Address</span>
             <input
@@ -72,21 +77,14 @@ export const LoginScreen = () => {
               required
             />
           </label>
-          <label style={{ display: "flex", flexDirection: "row" }}>
-            <input type="checkbox" />
-            <span>
-              I agree to the&nbsp;
-              <span style={{ textDecoration: "underline" }}>
-                terms & policy
-              </span>
-            </span>
-          </label>
           <button type="submit">Login</button>
+          <div className="register">
+            <span className="text">Not have an account?&nbsp; </span>
+            <Link to="/signup" style={{ color: "#6161fc", textDecoration: "underline", cursor: 'pointer' }}>
+              Signup
+            </Link>
+          </div>
         </form>
-      </div>
-
-      <div className="loginScreen__imgContainer">
-        <img src={image} alt="imageSide" />
       </div>
     </div>
   );
