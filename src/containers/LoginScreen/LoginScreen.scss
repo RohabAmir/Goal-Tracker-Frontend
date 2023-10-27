@@ -1,3 +1,5 @@
+@import "../../index.scss";
+
 .loginScreen{
     display: flex;
     align-items: center;
@@ -7,6 +9,11 @@
     overflow: hidden;
     background-color: #F6F8FC;
     padding-bottom: 120px;
+
+    @media only screen and (max-width: $bp-small){
+        padding: 40px;
+    }
+
     
 
     &__content{
@@ -14,13 +21,24 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+
+        @media only screen and (max-width: $bp-smallest){
+            width: 100%;
+    
+        }
+
         h1{
             text-align: center;
-            font-size: 32px;
+            font-size: 3.2rem;
             font-weight: 700;
             color: #000000;
             margin-bottom: 10px;
             line-height: 50px;
+
+            @media only screen and (max-width: $bp-smallest){
+                text-align: left;
+        
+            }
 
         }
         form{
@@ -29,13 +47,18 @@
             gap: 24px;
             width: 350px;
 
+            @media only screen and (max-width: $bp-smallest){
+                width: 100%;
+        
+            }
+
             label{
                 display: flex;
                 flex-direction: column;
-                gap: 4px;
+                gap: 6px;
                 
                 span{
-                    font-size: 16px;
+                    font-size: 1.6rem;
                     font-weight: 700;
                     color: #000000;
                     display: flex;
@@ -51,7 +74,7 @@
                     border: none;
                     border-radius: 10px;
                     padding: 10px 16px;
-                    font-size: 18px;
+                    font-size: 1.8rem;
                     font-weight: 400;
                     color: #1e1e2f;
                     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
@@ -59,7 +82,7 @@
                     cursor: pointer;
 
                     &::placeholder{
-                        font-size: 16px;
+                        font-size: 1.6rem;
                         color: #b6b3b3;
                         font-weight: 300;
                         font-family: "Open Sans";
@@ -76,14 +99,14 @@
 
             }
             button{
-                margin-block: 10px;
+                margin-block: 20px;
                 outline: none;
                 border: 1px solid transparent;
                 border-radius: 10px;
                 background: #6161FC;
                 color: #fff;
                 padding: 10px 20px;
-                font-size: 18px;
+                font-size: 1.8rem;
                 font-weight: 700;
                 box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
                 &:hover{
@@ -99,7 +122,7 @@
                 display: flex;
                 align-self: center;
                 .text{
-                    font-size: 16px;
+                    font-size: 1.6rem;
                     font-weight: 600;
                     color: #000000;
                 }

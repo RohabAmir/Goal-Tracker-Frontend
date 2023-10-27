@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
+import ErrorMesssage from "../../components/ErrorMesssage/ErrorMesssage";
 import { userLogin } from "../../redux/auth/authActions";
 import{
   PasswordHide,
@@ -16,30 +17,35 @@ import "./LoginScreen.scss";
 
 
 export const LoginScreen = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const[passwordHidden, setPasswordHidden] = useState({
     one: true,
     two: true
 });
   const { register, handleSubmit } = useForm();
-  const navigate = useNavigate();
-  const { loginSuccess } = useSelector((state) => state.auth)
+  const { loginSuccess, loginError } = useSelector((state) => state.auth)
 
-  const dispatch = useDispatch();
+ 
   const submitForm = (data) => { 
-    dispatch(userLogin(data)).then(()=> {
-      navigate('/dashboard');
-    })
-
-
-
+    dispatch(userLogin(data))
+    // .then(()=> {
+    //   navigate('/dashboard');
+    // }).catch((err) => {
+    //   console.log(err);
+    // })
   }
 
+  useEffect(() => {
+    console.log("error on login", loginError);
+  }, [loginError]);
 
-  // useEffect(() =>{
-  //   // redirect the user to the Dashboard page if user loggedIn
-  //   if( loginSuccess ) navigate ( '/dashboard' )
-  // },[navigate, loginSuccess])
+
+  useEffect(() =>{
+    // redirect the user to the Dashboard page if user loggedIn
+    if( loginSuccess ) navigate ( '/dashboard' )
+  },[navigate, loginSuccess])
   
   
   return (
@@ -77,6 +83,7 @@ export const LoginScreen = () => {
               required
             />
           </label>
+          {loginError && <ErrorMesssage message={loginError} />}
           <button type="submit">Login</button>
           <div className="register">
             <span className="text">Not have an account?&nbsp; </span>

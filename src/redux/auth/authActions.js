@@ -9,12 +9,12 @@ import api from "../../utils/api";
 
 
 // Helper function to handle API errors
-const handleApiError = (err , rejectWithValue) => {
-    if (!err.response) {
-      throw err;
-    }
-    return rejectWithValue(err.response.data);
-};
+// const handleApiError = (err , rejectWithValue) => {
+//     if (!err.response) {
+//       throw err;
+//     }
+//     return rejectWithValue(err.response.data);
+// };
 
 
 export const registerUser = createAsyncThunk(
@@ -27,7 +27,11 @@ export const registerUser = createAsyncThunk(
                 );
             return reponse.data;
         }catch (err) {
-            return handleApiError(err, rejectWithValue);
+            // console.log("err in thunk",err)
+            // return custom error message from backend if present
+            if(err.response && err.response.data){
+                return rejectWithValue(err.response.data);
+            }
           }
     }
 );
@@ -44,27 +48,30 @@ export const userLogin = createAsyncThunk(
               const { idToken, refreshToken, localId } = response.data;
             // Using the token to set in local storage
             setJWTToken(idToken, refreshToken, localId);
- 
             return response.data;
-        }catch (err) {
-            if(err.response && err.response.data === 401){
-                // if the login request returns a 401 Unauthorized status, it likely means the idToken has expired
-                // Attemp to refresh the token
-            const dispatch = useDispatch();
+        } catch (err) {
+            // if(err.response && err.response.data === 401){
+            //     // if the login request returns a 401 Unauthorized status, it likely means the idToken has expired
+            //     // Attemp to refresh the token
+            // const dispatch = useDispatch();
 
-            const refreshToken = getrefreshToken(); //getting the refreshToken from local storage
-            if(refreshToken){
-                return new Promise( async( resolve, reject) => {
-                    try{
-                        const refreshedToken = await dispatch(refreshAccessToken(refreshToken));
-                        resolve(refreshedToken);
-                    }catch(refreshError){
-                        reject(refreshError);
-                    }
-                });
+            // const refreshToken = getrefreshToken(); //getting the refreshToken from local storage
+            // if(refreshToken){
+            //     return new Promise( async( resolve, reject) => {
+            //         try{
+            //             const refreshedToken = await dispatch(refreshAccessToken(refreshToken));
+            //             resolve(refreshedToken);
+            //         }catch(refreshError){
+            //             reject(refreshError);
+            //         }
+            //     });
+            // }
+            // } 
+            // return custom error message from backend if present
+            console.log("err in thunk",err)
+            if(err.response && err.response.data){
+                return rejectWithValue(err.response.data);
             }
-            } //regular api error
-            return handleApiError(err, rejectWithValue);
         }
     }
 );

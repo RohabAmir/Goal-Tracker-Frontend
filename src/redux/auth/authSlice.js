@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 import { refreshAccessToken, registerUser, userLogin } from "./authActions";
 import { getidToken } from "../../utils/jwtToken";
 
