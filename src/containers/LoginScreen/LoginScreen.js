@@ -37,9 +37,6 @@ export const LoginScreen = () => {
     // })
   }
 
-  useEffect(() => {
-    console.log("error on login", loginError);
-  }, [loginError]);
 
 
   useEffect(() =>{

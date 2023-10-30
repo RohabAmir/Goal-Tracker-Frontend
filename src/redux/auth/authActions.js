@@ -68,7 +68,6 @@ export const userLogin = createAsyncThunk(
             // }
             // } 
             // return custom error message from backend if present
-            console.log("err in thunk",err)
             if(err.response && err.response.data){
                 return rejectWithValue(err.response.data);
             }

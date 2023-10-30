@@ -34,10 +34,6 @@ export const RegistrationScreen = () => {
   };
 
   useEffect(() => {
-    console.log("error on register", registerError);
-  }, [registerError]);
-
-  useEffect(() => {
     // redirect the user to the login page if registration was successfull
     if (registerSuccess) navigate("/login");
   }, [navigate, registerSuccess]);

@@ -1,10 +1,15 @@
+
+@import "../../sass/base/animation";
+@import "../../sass/component//button";
+
+
 .dashboard{
     display: flex;
     flex-direction: row;
 
 
     &__leftNavigation{
-        background: #333951;
+        background:#6161fc;
         color: #ffffff;
         position: fixed;
         top: 0;
@@ -40,7 +45,7 @@
                 height: 70px;
 
                 &:hover{
-                    background-color: #040412;
+                    background-color: #04045f;
                 }
             }
             .link.active::after{
@@ -64,7 +69,7 @@
             width: 100%;
             height: 70px;
             &:hover{
-                background-color: #040412;
+                background-color: #04045f;
             }
 
         }
@@ -73,7 +78,7 @@
     }
 
     &__content{
-       padding: 30px 35px 0px;
+       padding: 40px 35px 0px;
        margin-left: 120px;
        
         .row{
@@ -81,14 +86,23 @@
             display: flex;
             justify-content: space-between;
             border-bottom: 1px solid #c9c9c9;
+            
             .btn{
-                color: #c9c9c9;
+                outline: none;
+                border: 1px solid transparent;
+                background-color:  #6161fc;
+                padding: 10px 25px;
+                color: white;
+                border-radius: 50px;
+                font-size: 16px;
+                cursor: pointer;
                 text-decoration: none;
+                margin-bottom: 10px;
             }
             h3{
-                font-size: 25px;
-                font-weight: 600;
-                color: #333951;
+                font-size: 32px;
+                font-weight: 700;
+                color: #000000;
             }
         }
         .goal-list{
