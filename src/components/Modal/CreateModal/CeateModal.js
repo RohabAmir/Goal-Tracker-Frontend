@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 
-import { createGoals, fetchGoals } from "../../redux/goal/goalSlice";
-
-import "./Modal.scss";
-import { getLocalId } from "../../utils/jwtToken";
+import { createGoals, fetchGoals } from "../../../redux/goal/goalSlice";
+import { getLocalId } from "../../../utils/jwtToken";
 
 
+import "./CreateModal.scss";
 
-export const Modal = ({ setModal }) => {
+
+
+
+export const CreateModal = ({ setModal }) => {
     const dispatch = useDispatch();
 
     const { createGoalsSuccess, createGoalsError } = useSelector((state) => state.goals)
@@ -24,6 +26,7 @@ export const Modal = ({ setModal }) => {
         }))
         .then(()=> {
             dispatch(fetchGoals());
+            setModal(false); // Close the modal after successful submission
 
         })
     }

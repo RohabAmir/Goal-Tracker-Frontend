@@ -5,9 +5,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Goals } from "../../components/Goals/Goals";
-import { Modal } from "../../components/Modal/Modal";
+import { CreateModal, createModal } from "../../components/Modal/CreateModal/CeateModal";
 import { fetchGoals } from "../../redux/goal/goalSlice";
-import api from "../../utils/api";
 import { FolderOpen, Home, Logout, Setting, List } from "../../assets/icons";
 
 
@@ -37,8 +36,9 @@ export const Dashboard = () => {
   const GoalsFetched = goals.map((goal) => {
     return (
       <Goals
-        name={goal.goalName?.name}
+        goalName={goal.goalName?.goalName}
         // goals={goal.goalName?.goals} // currently is empty
+        id={goal.id}
         timeStamp={formatTimestamp(goal.goalName?.createdAt?._seconds)}
       />
     );
@@ -50,7 +50,7 @@ export const Dashboard = () => {
   };
   return (
     <>
-    {addGoalModal && <Modal setModal={setAddGoalModal}/>}
+    {addGoalModal && <CreateModal setModal={setAddGoalModal}/>}
       <div className="dashboard">
         <div className="dashboard__leftNavigation">
           <p className="dashboard__leftNavigation--logo">

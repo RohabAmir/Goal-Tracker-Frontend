@@ -33,4 +33,46 @@
     &:hover{
         box-shadow: 0px 20px 30px rgba( #c9c9c9, 0.50);
     }
+
+    .icon-container{
+
+        svg{
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+            
+            :hover{
+                color: red;
+                animation: heartBeat 0.6s infinite;
+
+            }
+            
+
+        }
+
+    }
+    @keyframes heartBeat {
+        0% {
+            transform: scale(1);
+        }
+
+        20% {
+            transform: scale(1.2);
+        }
+
+        40% {
+            transform: scale(1);
+        }
+
+        60% {
+            transform: scale(1.2);
+        }
+
+        80% {
+            transform: scale(1);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
 }

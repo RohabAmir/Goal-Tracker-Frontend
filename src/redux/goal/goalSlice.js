@@ -9,7 +9,11 @@ const initialState = {
     goalsError: null,
     createGoalsSuccess: false,
     createGoalsLoading: false,
-    createGoalsError: null
+    createGoalsError: null,
+    deleteGoalsSuccess: false,
+    deleteGoalsLoading: false,
+    deleteGoalsError: null,
+    
 };
 
 export const fetchGoals = createAsyncThunk(
@@ -47,6 +51,25 @@ export const createGoals = createAsyncThunk(
     }
 );
 
+export const deleteGoals = createAsyncThunk(
+    'goals/deleteGoals',
+    async (data, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(
+                `${api}/deleteGoal`,
+                data, 
+             {
+                headers: {
+                    Authorization: `Bearer ${getidToken()}`,
+                },
+            });
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || error.message);
+        }
+    }
+);
+
 const goalSlice = createSlice({
     name: 'goals',
     initialState,
@@ -57,7 +80,7 @@ const goalSlice = createSlice({
             state.goalsLoading = true;
             state.goalsError = null;
         },
-        [fetchGoals.fulfilled]: (state, { payload }) => {
+        [fetchGoals.fulfilled]: (state, { payload }) => { //goals fetched successfully
             state.goalsLoading = false;
             state.goals = payload;
         },
@@ -79,6 +102,21 @@ const goalSlice = createSlice({
             state.createGoalsLoading= false
             state.createGoalsSuccess = false
             state.createGoalsError= payload
+        },
+
+         //delete Goals
+         [deleteGoals.pending]: (state) => {
+            state.deleteGoalsLoading= true
+            state.deleteGoalsError = null
+        },
+        [deleteGoals.fulfilled]: (state , { payload }) => { // goals deleted successfully
+            state.deleteGoalsLoading= false
+            state.deleteGoalsSuccess= payload
+        },
+        [deleteGoals.rejected]: (state, { payload }) => {
+            state.deleteGoalsLoading= false
+            state.deleteGoalsSuccess = false
+            state.deleteGoalsError= payload
         },
     },
 });
