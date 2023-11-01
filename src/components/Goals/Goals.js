@@ -19,7 +19,7 @@ export const Goals = ({id, goalName, goals, timeStamp}) => {
 
   return (
     <>
-      { delGoalModal && <DeleteModal setDelModal={setDelGoalModal} id = {id}/>}
+      { delGoalModal && <DeleteModal setDelModal={setDelGoalModal} id = {id} goalName= {goalName}/>}
       <div className='goals'>
         <div className='goal-icon'>
             <Folder/>

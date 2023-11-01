@@ -5,28 +5,31 @@ import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Goals } from "../../components/Goals/Goals";
-import { CreateModal, createModal } from "../../components/Modal/CreateModal/CeateModal";
+import {
+  CreateModal,
+  createModal,
+} from "../../components/Modal/CreateModal/CeateModal";
 import { fetchGoals } from "../../redux/goal/goalSlice";
 import { FolderOpen, Home, Logout, Setting, List } from "../../assets/icons";
 
 
-
-
 import "./Dashboard.scss";
-
 
 export const Dashboard = () => {
   const navigate = useNavigate();
-  const dispatch= useDispatch();
-  const { goals, goalsLoading, goalsError } = useSelector((state) => state.goals);
+  const dispatch = useDispatch();
+  const { goals, goalsLoading, goalsError } = useSelector(
+    (state) => state.goals
+  );
   const [addGoalModal, setAddGoalModal] = useState(false);
 
   useEffect(() => {
     dispatch(fetchGoals());
   }, [dispatch]);
- 
 
- 
+  useEffect(() => {
+    console.log("goals loading", goalsLoading);
+  }, [goalsLoading]);
 
   const formatTimestamp = (timestamp) => {
     // Use moment to format the timestamp
@@ -50,7 +53,7 @@ export const Dashboard = () => {
   };
   return (
     <>
-    {addGoalModal && <CreateModal setModal={setAddGoalModal}/>}
+      {addGoalModal && <CreateModal setModal={setAddGoalModal} />}
       <div className="dashboard">
         <div className="dashboard__leftNavigation">
           <p className="dashboard__leftNavigation--logo">
@@ -79,11 +82,13 @@ export const Dashboard = () => {
         <div className="dashboard__content">
           <div className="row">
             <h3>Our Goals</h3>
-            <span onClick={()=> setAddGoalModal(true)}  className="btn">
+            <span onClick={() => setAddGoalModal(true)} className="btn">
               Create a goal
             </span>
           </div>
-          <div className="goal-list">{GoalsFetched}</div>
+          <div className="goal-list">
+            { GoalsFetched}
+          </div>
         </div>
       </div>
     </>
