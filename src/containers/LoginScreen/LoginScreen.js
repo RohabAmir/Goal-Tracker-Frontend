@@ -29,12 +29,7 @@ export const LoginScreen = () => {
 
  
   const submitForm = (data) => { 
-    dispatch(userLogin(data))
-    // .then(()=> {
-    //   navigate('/dashboard');
-    // }).catch((err) => {
-    //   console.log(err);
-    // })
+    dispatch(userLogin(data));
   }
 
 
@@ -42,6 +37,8 @@ export const LoginScreen = () => {
   useEffect(() =>{
     // redirect the user to the Dashboard page if user loggedIn
     if( loginSuccess ) navigate ( '/dashboard' )
+
+    console.log("loginSuccess",loginSuccess)
   },[navigate, loginSuccess])
   
   

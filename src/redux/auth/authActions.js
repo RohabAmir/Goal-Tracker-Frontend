@@ -73,6 +73,7 @@ export const userLogin = createAsyncThunk(
 );
 
 
+
 // This function should be called right after you receive the new token
 const updateToken = (newIdToken, newRefreshToken) => {
     localStorage.setItem('idToken', newIdToken);

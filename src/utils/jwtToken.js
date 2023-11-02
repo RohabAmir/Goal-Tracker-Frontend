@@ -17,4 +17,8 @@ export function getLocalId(){
   return localStorage.getItem('localId');
 }
 
+export function deleteJWTToken(){
+  localStorage.clear()
+}
+
 

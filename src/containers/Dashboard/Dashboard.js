@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import moment from "moment";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { userLogout } from "../../redux/auth/authSlice";
+import { fetchGoals } from "../../redux/goal/goalSlice";
 
+import moment from "moment";
 import { Goals } from "../../components/Goals/Goals";
 import {
   CreateModal,
-  createModal,
 } from "../../components/Modal/CreateModal/CeateModal";
-import { fetchGoals } from "../../redux/goal/goalSlice";
 import { FolderOpen, Home, Logout, Setting, List } from "../../assets/icons";
 
 
@@ -27,9 +26,6 @@ export const Dashboard = () => {
     dispatch(fetchGoals());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log("goals loading", goalsLoading);
-  }, [goalsLoading]);
 
   const formatTimestamp = (timestamp) => {
     // Use moment to format the timestamp
@@ -48,9 +44,10 @@ export const Dashboard = () => {
   });
 
   const handleLogout = () => {
-    localStorage.clear(); //clearing the tokens stored in local storage
     navigate("/login");
+    dispatch(userLogout());
   };
+  
   return (
     <>
       {addGoalModal && <CreateModal setModal={setAddGoalModal} />}
@@ -74,9 +71,9 @@ export const Dashboard = () => {
             </Link>
           </div>
           <div className="link log">
-            <Link to="/login">
+            <Link to="/login"> 
               <Logout onClick={handleLogout} />
-            </Link>
+            </Link> 
           </div>
         </div>
         <div className="dashboard__content">
