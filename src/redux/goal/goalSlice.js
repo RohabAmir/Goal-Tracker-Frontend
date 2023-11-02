@@ -18,7 +18,7 @@ const initialState = {
     
 };
 
-// export const fetchGoals = createAsyncThunk( // Code without the refreshToken 
+// export const fetchGoals = createAsyncThunk(                     // Code without the refreshToken 
 //     'goals/fetchGoals',
 //     async (_, { rejectWithValue }) => {
 //         try {
@@ -70,7 +70,7 @@ export const fetchGoals = createAsyncThunk(
 
 export const createGoals = createAsyncThunk(
     'goals/createGoals',
-    async (data, { rejectWithValue }) => {
+    async (data, { rejectWithValue, dispatch }) => {
         try {
             const response = await axios.post(
                 `${api}/createGoal`,
@@ -87,7 +87,7 @@ export const createGoals = createAsyncThunk(
                 try {
                     await dispatch(refreshToken()); // Refresh the token
                     let newIdToken = localStorage.getItem('idToken'); // Get the new idToken
-                    const response = await axios.get(`${api}/createGoals`, { // Retry the request with the new token
+                    const response = await axios.post(`${api}/createGoal`, { // Retry the request with the new token
                         headers: {
                             Authorization: `Bearer ${newIdToken}`,
                         },
@@ -105,7 +105,7 @@ export const createGoals = createAsyncThunk(
 
 export const deleteGoals = createAsyncThunk(
     'goals/deleteGoals',
-    async (data, { rejectWithValue }) => {
+    async (data, { rejectWithValue, dispatch }) => {
         try {
             const response = await axios.post(
                 `${api}/deleteGoal`,
@@ -122,7 +122,7 @@ export const deleteGoals = createAsyncThunk(
                 try {
                     await dispatch(refreshToken()); // Refresh the token
                     let newIdToken = localStorage.getItem('idToken'); // Get the new idToken
-                    const response = await axios.get(`${api}/deleteGoals`, { // Retry the request with the new token
+                    const response = await axios.post(`${api}/deleteGoal`, { // Retry the request with the new token
                         headers: {
                             Authorization: `Bearer ${newIdToken}`,
                         },
@@ -147,9 +147,14 @@ const updateToken = (newIdToken, newRefreshToken) => {
     }
 };
 
-export const refreshToken = createAsyncThunk('auth/refreshToken', async () => {
+export const refreshToken = createAsyncThunk(
+    'auth/refreshToken', 
+    async () => {
     const refreshToken = localStorage.getItem('refreshToken');
-    const response = await axios.post(`${api}/refreshToken`, { refreshtoken: refreshToken });
+    const response = await axios.post(
+        `${api}/refreshToken`, 
+        { refreshtoken: refreshToken }
+    );
 
     // Check if the response is successful and contains the userToken object
     if (response.status === 200 && response.data && response.data.userToken) {
@@ -157,7 +162,7 @@ export const refreshToken = createAsyncThunk('auth/refreshToken', async () => {
 
         // Update the tokens in localStorage
         updateToken(access_token, refresh_token);
-        
+    
         return { access_token, refresh_token };
     } else {
         throw new Error('Failed to refresh token');
@@ -219,6 +224,7 @@ const goalSlice = createSlice({
             state.deleteGoalsSuccess = false
             state.deleteGoalsError= payload
         },
+
     },
 });
 

@@ -38,9 +38,9 @@ export const registerUser = createAsyncThunk(
 
 export const userLogin = createAsyncThunk(
     'auth/login',
-    async ({  email, password} , { rejectWithValue }) =>{
+    async ({  email, password} , { rejectWithValue, dispatch }) =>{
         try {
-            const response = await axios.post( // making a POST request to the login  route using Axios
+            const response = await axios.post( 
                 `${api}/login`,
                 {  email, password }, // values from the Login form
                 );
@@ -50,48 +50,55 @@ export const userLogin = createAsyncThunk(
             setJWTToken(idToken, refreshToken, localId);
             return response.data;
         } catch (err) {
-            // if(err.response && err.response.data === 401){
-            //     // if the login request returns a 401 Unauthorized status, it likely means the idToken has expired
-            //     // Attemp to refresh the token
-            // const dispatch = useDispatch();
-
-            // const refreshToken = getrefreshToken(); //getting the refreshToken from local storage
-            // if(refreshToken){
-            //     return new Promise( async( resolve, reject) => {
-            //         try{
-            //             const refreshedToken = await dispatch(refreshAccessToken(refreshToken));
-            //             resolve(refreshedToken);
-            //         }catch(refreshError){
-            //             reject(refreshError);
-            //         }
-            //     });
-            // }
-            // } 
-            // return custom error message from backend if present
-            if(err.response && err.response.data){
+            if (err.response?.status === 401) {
+                // Token is expired, try refreshing it
+                try {
+                    await dispatch(refreshToken()); // Refresh the token
+                    let newIdToken = localStorage.getItem('idToken'); // Get the new idToken
+                    const response = await axios.post(`${api}/login`, { // Retry the request with the new token
+                        headers: {
+                            Authorization: `Bearer ${newIdToken}`,
+                        },
+                    });
+                    return response.data;
+                } catch (refreshError) {
+                    return rejectWithValue(refreshError.response?.data || refreshError.message);
+                }
+                // Regular API error response
+            } else if(err.response && err.response.data){
                 return rejectWithValue(err.response.data);
             }
         }
     }
 );
 
-export const refreshAccessToken = createAsyncThunk(
-    'auth/refreshToken',
-    async(refreshToken,{rejectWithValue}) => {
-        try {
-            const response = await axios.post(
-                `${api}/refreshToken`,
-                { refreshToken } // Send the refreshToken to the server to get a new idToken
 
-            );
-
-            //update the idToken and refreshToken in local storage
-            const { idToken, refreshToken: newRefreshToken } = response.data;     
-            setJWTToken(idToken, newRefreshToken);
-            
-            return idToken;
-        }catch(err){
-            return handleApiError(err, rejectWithValue);
-        }
+// This function should be called right after you receive the new token
+const updateToken = (newIdToken, newRefreshToken) => {
+    localStorage.setItem('idToken', newIdToken);
+    if (newRefreshToken) {
+        localStorage.setItem('refreshToken', newRefreshToken);
     }
-);
+};
+
+export const refreshToken = createAsyncThunk(
+    'auth/refreshToken', 
+    async () => {
+    const refreshToken = localStorage.getItem('refreshToken');
+    const response = await axios.post(
+        `${api}/refreshToken`, 
+        { refreshtoken: refreshToken }
+    );
+
+    // Check if the response is successful and contains the userToken object
+    if (response.status === 200 && response.data && response.data.userToken) {
+        const { access_token, refresh_token } = response.data.userToken;
+
+        // Update the tokens in localStorage
+        updateToken(access_token, refresh_token);
+    
+        return { access_token, refresh_token };
+    } else {
+        throw new Error('Failed to refresh token');
+    }
+});
